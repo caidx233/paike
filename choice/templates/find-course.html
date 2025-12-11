@@ -1,0 +1,492 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>搜索课程</title>
+    <link rel="stylesheet" href="{% static 'css/search.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!--link href="styles/style.css" rel="stylesheet" /-->
+    <!--link href="https://fonts.googleapis.com/css?family=Open+Sans"rel="stylesheet" /-->
+  </head>
+  <body>
+    <!--h1>选择课程</h1/-->
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="loading-spinner"></div>
+    </div>
+    <div class="search-container">
+      <div class="search-header">
+        <h1><i class="fas fa-search"></i> 课程搜索</h1>
+        <div class="search-icon">
+          <i class="fas fa-graduation-cap"></i>
+        </div>
+      </div>
+      <form class="search-form" id="searchForm">
+        <div class="form-row">
+          <!-- 课程编号输入 -->
+          <div class="form-field">
+            <div class="form-label">
+              <i class="fas fa-hashtag"></i>
+              <span>课程编号</span>
+            </div>
+            <input
+              type="text"
+              class="search-input"
+              id="code"
+              name="code"
+              placeholder="例如：CS1001、MATH2001"
+              maxlength="20"
+            />
+            <div class="form-help">
+              <i class="fas fa-info-circle"></i>
+              请输入完整的课程编号，支持字母和数字组合
+            </div>
+          </div>
+
+          <!-- 中文名称输入 -->
+          <div class="form-field">
+            <div class="form-label">
+              <i class="fas fa-font"></i>
+              <span>中文名称</span>
+            </div>
+            <input
+              type="text"
+              class="search-input"
+              id="name"
+              name="name"
+              placeholder="例如：数学分析、力学"
+              maxlength="50"
+            />
+            <div class="form-help">
+              <i class="fas fa-info-circle"></i>
+              支持模糊搜索，可输入部分课程名称
+            </div>
+          </div>
+        </div>
+
+        <!-- 按钮区域 -->
+        <div class="form-actions">
+          <button type="submit" class="submit-btn">
+            <i class="fas fa-search"></i> 搜索课程
+          </button>
+          <button type="button" class="reset-btn" id="resetBtn">
+            <i class="fas fa-redo"></i> 重置条件
+          </button>
+        </div>
+      </form>
+      <!-- previous
+    <form action="./" method="get">
+      <label for="code">课程编号</label>
+      <input type="text" name="code" id="code" />
+      <label for="name">课程名称</label>
+      <input type="text" name="name" id="name" />
+      <button>search</button>
+    </form>-->
+      <div class="results-container" id="resultsContainer">
+        <div class="results-header">
+          <h2><i class="fas fa-list-ul"></i> 搜索结果</h2>
+        </div>
+
+        <!-- 结果统计 -->
+        <div id="resultsStats">
+          <div class="results-count">
+            找到 <span id="resultsCount">{{num}}</span> 门课程
+          </div>
+        </div>
+
+        <!-- 搜索结果列表 -->
+        <div class="results-list" id="resultsList">
+          <!-- 搜索结果将通过JavaScript动态插入 -->
+          {% for i in courses %}
+          <div class="result-card">
+            <div class="result-card-header">
+              <div class="course-code">{{i.code}}</div>
+              <div class="course-credits">{{i.credits}} 学分</div>
+            </div>
+            <h3>{{i.cn}}</h3>
+            <div class="result-card-footer">
+              <a href="./{{i.code}}">
+              <button class="view-details-btn" ">
+                <i class="fas fa-info-circle"></i> 查看详情
+              </button>
+              </a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <!-- 分页 -->
+        <div class="pagination" id="pagination">
+          <button class="pagination-btn" id="prevBtn" disabled>
+            <i class="fas fa-chevron-left"></i> 上一页
+          </button>
+          <div class="pagination-info">
+            第 <span id="currentPage">1</span> 页，共
+            <span id="totalPages">1</span> 页
+          </div>
+          <button class="pagination-btn" id="nextBtn" disabled>
+            下一页 <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- previos
+    li>
+      {% for i in courses %}
+      <p><a href="./{{i.code}}">{{i.code}} {{i.cn}}</a></p>
+      {% endfor %}
+    </li-->
+    <!--script src="scripts/main.js"></script/-->
+  </body>
+  <script>
+    /*const mockCourses = [
+            {
+                id: "CS101",
+                name: "计算机科学导论",
+                chineseName: "计算机科学导论",
+                credits: 3,
+                instructor: "张教授",
+                time: "周一 9:00-10:30",
+                location: "教学楼A301",
+                type: "required",
+                description: "计算机科学基础入门课程"
+            },
+            {
+                id: "MATH201",
+                name: "高等数学A",
+                chineseName: "高等数学A",
+                credits: 4,
+                instructor: "李教授",
+                time: "周二 8:00-9:30",
+                location: "教学楼B102",
+                type: "required",
+                description: "微积分基础课程"
+            },
+            {
+                id: "ENG101",
+                name: "大学英语I",
+                chineseName: "大学英语I",
+                credits: 2,
+                instructor: "王老师",
+                time: "周三 14:00-15:30",
+                location: "外语楼201",
+                type: "required",
+                description: "英语基础课程"
+            },
+            {
+                id: "CS201",
+                name: "数据结构",
+                chineseName: "数据结构",
+                credits: 3,
+                instructor: "赵教授",
+                time: "周四 10:00-12:00",
+                location: "计算机楼301",
+                type: "required",
+                description: "数据结构与算法基础"
+            },
+            {
+                id: "ART101",
+                name: "艺术鉴赏",
+                chineseName: "艺术鉴赏",
+                credits: 2,
+                instructor: "孙教授",
+                time: "周五 13:00-14:30",
+                location: "艺术楼101",
+                type: "elective",
+                description: "艺术欣赏与批评"
+            },
+            {
+                id: "PE101",
+                name: "体育I",
+                chineseName: "体育I",
+                credits: 1,
+                instructor: "周老师",
+                time: "周一 15:00-16:30",
+                location: "体育馆",
+                type: "required",
+                description: "体育基础课程"
+            }
+        ];
+
+        // 当前状态
+        let currentResults = [];
+        let currentPage = 1;
+        const resultsPerPage = 4;
+        let currentFilter = 'all';
+
+        // DOM元素
+        const searchForm = document.getElementById('searchForm');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const resultsList = document.getElementById('resultsList');
+        const resultsCount = document.getElementById('resultsCount');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const searchBtn = document.getElementById('searchBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const pagination = document.getElementById('pagination');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const currentPageSpan = document.getElementById('currentPage');
+        const totalPagesSpan = document.getElementById('totalPages');
+        const sortSelect = document.getElementById('sortBy');
+        const quickFilters = document.getElementById('quickFilters');
+        const suggestionTags = document.querySelectorAll('.suggestion-tag');
+
+        // 表单提交事件
+        searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            performSearch();
+        });
+
+        // 执行搜索
+        function performSearch() {
+            const courseId = document.getElementById('courseId').value.trim().toLowerCase();
+            const courseName = document.getElementById('courseName').value.trim().toLowerCase();
+            
+            // 显示加载动画
+            loadingOverlay.style.display = 'flex';
+            searchBtn.disabled = true;
+            searchBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 搜索中...';
+
+            // 模拟网络延迟
+            setTimeout(() => {
+                // 过滤课程
+                let results = mockCourses.filter(course => {
+                    const matchesId = !courseId || 
+                        course.id.toLowerCase().includes(courseId) || 
+                        course.id.toLowerCase().startsWith(courseId);
+                    
+                    const matchesName = !courseName || 
+                        course.name.toLowerCase().includes(courseName) ||
+                        course.chineseName.toLowerCase().includes(courseName);
+                    
+                    return matchesId && matchesName;
+                });
+
+                // 应用筛选
+                if (currentFilter !== 'all') {
+                    results = results.filter(course => {
+                        if (currentFilter === 'required') return course.type === 'required';
+                        if (currentFilter === 'elective') return course.type === 'elective';
+                        if (currentFilter === 'morning') return course.time.includes('9:00') || course.time.includes('8:00') || course.time.includes('10:00');
+                        if (currentFilter === 'afternoon') return course.time.includes('14:00') || course.time.includes('13:00') || course.time.includes('15:00');
+                        return true;
+                    });
+                }
+
+                // 更新结果
+                updateResults(results);
+                
+                // 隐藏加载动画
+                loadingOverlay.style.display = 'none';
+                searchBtn.disabled = false;
+                searchBtn.innerHTML = '<i class="fas fa-search"></i> 搜索课程';
+                
+                // 滚动到结果区域
+                resultsContainer.scrollIntoView({ behavior: 'smooth' });
+            }, 800);
+        }
+
+        // 更新结果显示
+        function updateResults(results) {
+            currentResults = results;
+            currentPage = 1;
+            
+            // 更新计数
+            resultsCount.textContent = results.length;
+            
+            // 显示/隐藏结果区域
+            if (results.length > 0) {
+                resultsContainer.style.display = 'block';
+                renderResults();
+                updatePagination();
+            } else {
+                showNoResults();
+            }
+        }
+
+        // 渲染结果
+        function renderResults() {
+            resultsList.innerHTML = '';
+            
+            // 计算分页
+            const startIndex = (currentPage - 1) * resultsPerPage;
+            const endIndex = Math.min(startIndex + resultsPerPage, currentResults.length);
+            const pageResults = currentResults.slice(startIndex, endIndex);
+            
+            // 排序
+            sortResults(pageResults);
+            
+            // 生成卡片
+            pageResults.forEach(course => {
+                const card = document.createElement('div');
+                card.className = 'result-card';
+                card.innerHTML = `
+                    <div class="result-card-header">
+                        <div class="course-code">${course.id}</div>
+                        <div class="course-credits">${course.credits} 学分</div>
+                    </div>
+                    <h3>${course.chineseName}</h3>
+                    <p style="color: #666; margin-bottom: 15px;">${course.description}</p>
+                    <div class="result-card-details">
+                        <div class="detail-item">
+                            <i class="fas fa-user"></i>
+                            <span>授课教师：${course.instructor}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>上课地点：${course.location}</span>
+                        </div>
+                    </div>
+                    <div class="result-card-footer">
+                        <div class="course-time">
+                            <i class="far fa-clock"></i>
+                            ${course.time}
+                        </div>
+                        <button class="view-details-btn" onclick="viewCourseDetails('${course.id}')">
+                            <i class="fas fa-info-circle"></i> 查看详情
+                        </button>
+                    </div>
+                `;
+                resultsList.appendChild(card);
+            });
+        }
+
+        // 排序
+        function sortResults(results) {
+            const sortBy = sortSelect.value;
+            
+            switch(sortBy) {
+                case 'name':
+                    results.sort((a, b) => a.chineseName.localeCompare(b.chineseName));
+                    break;
+                case 'time':
+                    results.sort((a, b) => {
+                        const timeA = parseInt(a.time.match(/\d+/)[0]);
+                        const timeB = parseInt(b.time.match(/\d+/)[0]);
+                        return timeA - timeB;
+                    });
+                    break;
+                case 'credits':
+                    results.sort((a, b) => b.credits - a.credits);
+                    break;
+            }
+        }
+
+        // 显示无结果
+        function showNoResults() {
+            resultsContainer.style.display = 'block';
+            resultsList.innerHTML = `
+                <div class="empty-results">
+                    <i class="fas fa-search"></i>
+                    <h3>未找到相关课程</h3>
+                    <p>请尝试调整搜索条件，或使用不同的关键词</p>
+                    <button class="submit-btn" style="margin-top: 20px; padding: 12px 24px;" onclick="resetSearch()">
+                        <i class="fas fa-redo"></i> 重新搜索
+                    </button>
+                </div>
+            `;
+            pagination.style.display = 'none';
+        }
+
+        // 更新分页
+        function updatePagination() {
+            const totalPages = Math.ceil(currentResults.length / resultsPerPage);
+            
+            if (totalPages > 1) {
+                pagination.style.display = 'flex';
+                currentPageSpan.textContent = currentPage;
+                totalPagesSpan.textContent = totalPages;
+                
+                prevBtn.disabled = currentPage === 1;
+                nextBtn.disabled = currentPage === totalPages;
+            } else {
+                pagination.style.display = 'none';
+            }
+        }
+
+        // 分页按钮事件
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderResults();
+                updatePagination();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            const totalPages = Math.ceil(currentResults.length / resultsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderResults();
+                updatePagination();
+            }
+        });
+
+        // 排序事件
+        sortSelect.addEventListener('change', () => {
+            renderResults();
+        });
+
+        // 快速筛选
+        quickFilters.addEventListener('click', (e) => {
+            if (e.target.classList.contains('filter-btn')) {
+                // 更新激活状态
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                e.target.classList.add('active');
+                
+                // 更新筛选器
+                currentFilter = e.target.dataset.filter;
+                
+                // 如果已有搜索结果显示，重新筛选
+                if (currentResults.length > 0) {
+                    performSearch();
+                }
+            }
+        });
+
+        // 搜索建议
+        suggestionTags.forEach(tag => {
+            tag.addEventListener('click', () => {
+                const suggestion = tag.dataset.suggestion;
+                document.getElementById('courseName').value = suggestion;
+                performSearch();
+            });
+        });
+
+        // 重置按钮
+        resetBtn.addEventListener('click', resetSearch);
+
+        function resetSearch() {
+            searchForm.reset();
+            resultsContainer.style.display = 'none';
+            currentFilter = 'all';
+            
+            // 重置筛选按钮状态
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector('[data-filter="all"]').classList.add('active');
+        }
+
+        // 查看课程详情
+        function viewCourseDetails(courseId) {
+            alert(`查看课程 ${courseId} 的详细信息\n\n在实际应用中，这里会跳转到课程详情页面或显示模态框。`);
+        }
+
+        // 初始搜索（显示所有课程）
+        window.addEventListener('DOMContentLoaded', () => {
+            performSearch();
+        });*/
+        const resetBtn = document.getElementById('resetBtn');
+        resetBtn.addEventListener('click', resetSearch);
+        function resetSearch() {
+            searchForm.reset();
+            // 重置筛选按钮状态
+        }
+  </script>
+</html>

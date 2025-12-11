@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>排课结果</title>
+    <link rel="stylesheet" href="{% static 'css/result.css' %}" />
+    <!--link href="styles/style.css" rel="stylesheet" /-->
+    <!--link href="https://fonts.googleapis.com/css?family=Open+Sans"rel="stylesheet" /-->
+  </head>
+  <body>
+    <div class="course-table">
+      <div id="502946">
+        <table class="timetable" id="502946">
+          <thead>
+            <tr>
+              <th colspan="2"></th>
+              <th scope="col"><div>星期一</div></th>
+              <th scope="col"><div>星期二</div></th>
+              <th scope="col"><div>星期三</div></th>
+              <th scope="col"><div>星期四</div></th>
+              <th scope="col"><div>星期五</div></th>
+              <th scope="col"><div>星期六</div></th>
+              <th scope="col"><div>星期日</div></th>
+            </tr>
+          </thead>
+          {% for tot in cls %}
+          <tbody class="{{tot.name}}">
+            {% for nw in tot.main %}
+            <tr class="{{nw.num}}">
+              {% if nw.num == '1' %}
+              <th scope="row" rowspan="5">上午</th>
+              {% endif %} {% if nw.num == '6' %}
+              <th scope="row" rowspan="5">下午</th>
+              {% endif %} {% if nw.num == '11' %}
+              <th scope="row" rowspan="5">晚上</th>
+              {% endif %}
+              <th
+                scope="row"
+                class="span"
+                data-start="{{nw.st}}"
+                data-end="{{nw.ed}}"
+              >
+                {{nw.num}}
+              </th>
+              {% for i in nw.main %}
+              <td>
+                {% if i != None %}
+                <div class="cell" data-range="{{i.range}}">
+                  <span class="start">{{i.start}}</span>
+                  <span class="end">{{i.end}}</span>
+                  <div class="c">
+                    <h4 class="number">{{i.code}}[6]</h4>
+                    <h3 class="title">{{i.cn}}</h3>
+                    <p class="teacher">
+                      {% for j in i.teacher %}
+                      <span class="name">{{j}}</span>
+                      {% endfor %}
+                    </p>
+                    <p class="time">
+                      <span class="week">{{i.week}}</span>
+                      <span class="timespan">{{i.printt}}</span>
+                    </p>
+                    <p class="classroom">
+                      <span class="name">{{i.classroom}}&nbsp;</span>
+                    </p>
+                  </div>
+                </div>
+                {% endif %}
+              </td>
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

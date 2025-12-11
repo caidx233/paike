@@ -1,0 +1,676 @@
+/* 已选课堂管理界面样式 */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* 主容器 */
+.selected-courses-container {
+  max-width: 900px;
+  width: 100%;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  animation: fadeIn 0.5s ease;
+}
+
+/* 头部区域 */
+.selected-header {
+  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+  color: white;
+  padding: 30px 40px;
+  position: relative;
+}
+
+.back-to-main {
+  display: inline-flex;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  margin-bottom: 15px;
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.back-to-main i {
+  margin-right: 8px;
+  font-size: 0.9rem;
+}
+
+.back-to-main:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-title h1 {
+  font-size: 2rem;
+  margin-bottom: 5px;
+  font-weight: 700;
+}
+
+.header-title p {
+  opacity: 0.9;
+  font-size: 1rem;
+}
+
+.header-stats {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 12px 20px;
+  border-radius: 12px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #f1c40f;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+/* 当前课程信息卡片 */
+.current-course-card {
+  background: #f8f9fa;
+  margin: 25px 40px;
+  padding: 25px;
+  border-radius: 12px;
+  border-left: 4px solid #3498db;
+}
+
+.course-info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.course-title-section h2 {
+  color: #2c3e50;
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+}
+
+.course-code-badge {
+  display: inline-block;
+  background: #3498db;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-right: 10px;
+}
+
+.course-credits {
+  color: #e74c3c;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.course-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.detail-item {
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.detail-label {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+  margin-bottom: 4px;
+}
+
+.detail-value {
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 0.95rem;
+}
+
+/* 已选课堂列表 */
+.selected-classes-section {
+  padding: 0 40px 30px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #3498db;
+}
+
+.section-title h3 {
+  color: #2c3e50;
+  font-size: 1.4rem;
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.section-title h3 i {
+  margin-right: 10px;
+  color: #3498db;
+}
+
+.classes-count {
+  background: #3498db;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+/* 已选课堂列表 */
+.selected-classes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+/* 已选课堂卡片 */
+.selected-class-card {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.selected-class-card:hover {
+  border-color: #3498db;
+  box-shadow: 0 6px 15px rgba(52, 152, 219, 0.1);
+}
+
+.selected-class-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: #2ecc71;
+}
+
+.class-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.class-code-large {
+  font-weight: 700;
+  color: #3498db;
+  font-size: 1.2rem;
+  background: #e8f4fc;
+  padding: 6px 15px;
+  border-radius: 20px;
+}
+
+.class-status-badge {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 15px;
+}
+
+.status-selected {
+  background: #d5f4e6;
+  color: #27ae60;
+}
+
+.status-pending {
+  background: #fff4e6;
+  color: #e67e22;
+}
+
+/* 课堂详情网格 */
+.class-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.class-detail-item {
+  background: #f8f9fa;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.class-detail-label {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+  margin-bottom: 5px;
+}
+
+.class-detail-value {
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.class-detail-value i {
+  margin-right: 8px;
+  color: #3498db;
+}
+
+/* 选中时间 */
+.selection-time {
+  color: #95a5a6;
+  font-size: 0.85rem;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+  display: flex;
+  align-items: center;
+}
+
+.selection-time i {
+  margin-right: 8px;
+  color: #95a5a6;
+}
+
+/* 操作按钮区域 */
+.action-buttons-section {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 25px 40px;
+  background: #f8f9fa;
+  border-top: 1px solid #e0e0e0;
+}
+
+/* 主操作按钮 */
+.action-button {
+  padding: 16px 35px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  min-width: 160px;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.action-button i {
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+
+.action-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.7s ease;
+}
+
+.action-button:hover::before {
+  left: 100%;
+}
+
+/* 返回按钮 */
+.btn-back {
+  background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+  color: white;
+}
+
+.btn-back:hover {
+  background: linear-gradient(135deg, #7f8c8d 0%, #6c7b7d 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(149, 165, 166, 0.3);
+}
+
+/* 更改按钮 */
+.btn-change {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+}
+
+.btn-change:hover {
+  background: linear-gradient(135deg, #2980b9 0%, #1c5a7a 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+}
+
+/* 删除按钮 */
+.btn-delete {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+}
+
+.btn-delete:hover {
+  background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(231, 76, 60, 0.3);
+}
+
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 50px 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  margin: 20px 0;
+}
+
+.empty-state i {
+  font-size: 4rem;
+  color: #bdc3c7;
+  margin-bottom: 20px;
+}
+
+.empty-state h3 {
+  color: #7f8c8d;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+.empty-state p {
+  color: #95a5a6;
+  margin-bottom: 25px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 确认删除对话框 */
+.delete-confirm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(3px);
+}
+
+.delete-confirm-dialog {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  animation: slideInDown 0.3s ease;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.dialog-header i {
+  color: #e74c3c;
+  font-size: 1.5rem;
+  margin-right: 15px;
+}
+
+.dialog-header h3 {
+  color: #2c3e50;
+  font-size: 1.3rem;
+}
+
+.dialog-body {
+  color: #555;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+.dialog-btn {
+  padding: 10px 25px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dialog-btn-cancel {
+  background: #f8f9fa;
+  color: #555;
+}
+
+.dialog-btn-cancel:hover {
+  background: #e9ecef;
+}
+
+.dialog-btn-confirm {
+  background: #e74c3c;
+  color: white;
+}
+
+.dialog-btn-confirm:hover {
+  background: #c0392b;
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  .selected-header,
+  .current-course-card,
+  .selected-classes-section,
+  .action-buttons-section {
+    padding: 20px;
+  }
+
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .header-title h1 {
+    font-size: 1.7rem;
+  }
+
+  .action-buttons-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .action-button {
+    min-width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .course-details-grid,
+  .class-details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .selected-courses-container {
+    border-radius: 12px;
+  }
+
+  .selected-header {
+    padding: 15px;
+  }
+
+  .current-course-card {
+    margin: 15px;
+    padding: 20px;
+  }
+
+  .selected-classes-section {
+    padding: 0 15px 20px;
+  }
+
+  .selected-class-card {
+    padding: 15px;
+  }
+
+  .class-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .class-code-large {
+    font-size: 1rem;
+    padding: 5px 12px;
+  }
+
+  .action-button {
+    padding: 14px 20px;
+    font-size: 1rem;
+  }
+}
+
+/* 加载状态 */
+.loading-state {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.loading-spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* 成功提示 */
+.success-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #2ecc71;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  animation: slideInRight 0.3s ease, fadeOut 0.3s ease 2.7s;
+}
+
+.success-message i {
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

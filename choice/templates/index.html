@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>排课系统</title>
+    <link rel="stylesheet" href="{% static 'css/styleidx.css' %}" />
+    <!--link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    /-->
+    <!--link href="styles/style.css" rel="stylesheet" /-->
+    <!--link href="https://fonts.googleapis.com/css?family=Open+Sans"rel="stylesheet" /-->
+  </head>
+  <body>
+    <div class="courses-section">
+      <div class="section-title">
+        <h2>已加入的课程</h2>
+        <div class="courses-count">{{num}}门课程</div>
+      </div>
+
+      <div class="courses-list">
+        <!-- 
+        <div class="course-card">
+          <div class="course-name">高等数学</div>
+          <a href="math-details.html" class="course-link">查看课程详细信息 →</a>
+          <div class="course-info">
+            <div class="course-time">
+              <i class="far fa-clock"></i> 周一 9:00-10:30
+            </div>
+            <div class="course-instructor">
+              <i class="fas fa-user"></i> 张教授
+            </div>
+          </div>
+          <div class="course-tags">
+            <span class="course-tag">必修</span>
+            <span class="course-tag">理科</span>
+          </div>
+        </div>课程卡片1 -->
+        {% for i in choice %}
+        <div class="course-card">
+          <div class="course-name">{{i.code}}{{i.cn}}</div>
+          <a href="/detail/{{i.code}}" class="course-link"
+            >查看课程详细信息 →</a
+          >
+        </div>
+        {% endfor %}
+      </div>
+      <div class="section-title">
+        <h2>已加入的课程组</h2>
+        <div class="courses-count">{{nums}}门课程</div>
+      </div>
+      <div class="courses-list">
+        {% for i in choices %}
+        <div class="course-card">
+          <div class="course-name">
+            {% for j in i.rlt.all %}{{j.cn}}{{' '}}{% endfor %}
+          </div>
+          <a href="/courses/{{i.id}}" class="course-link"
+            >查看课程组详细信息 →</a
+          >
+        </div>
+        {% endfor %}
+      </div>
+      <div class="actions-section">
+        <a href="/solve"
+          ><button class="action-button schedule-btn">
+            <i class="fas fa-calendar-alt"></i> 排课
+          </button></a
+        >
+        <a href="/choice"
+          ><button class="action-button add-course-btn">
+            <i class="fas fa-plus-circle"></i> 添加课程
+          </button></a
+        >
+        <a href="/courses/new"
+          ><button class="action-button add-course-btn">
+            <i class="fas fa-plus-circle"></i> 添加课程组
+          </button></a
+        >
+      </div>
+    </div>
+  </body>
+</html>

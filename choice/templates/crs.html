@@ -1,0 +1,185 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>课程组详情</title>
+    <link rel="stylesheet" href="{% static 'css/courses.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <!-- 标题区域 -->
+      <!--div class="header">
+        <h1><i class="fas fa-calendar-alt"></i> 课程安排管理系统</h1>
+        <p>设置您的选课限制条件</p>
+      </div-->
+
+      <!-- 限制条件表单 -->
+      <form class="limits-form" id="limitsForm" action="" method="post">
+        {% csrf_token %}
+        <div class="form-title">
+          <i class="fas fa-sliders-h"></i>
+          <h2>排课限制条件</h2>
+        </div>
+
+        <div class="form-row">
+          <!-- 最低学分 -->
+          <div class="form-field">
+            <label for="minCredits">
+              最低学分 <span class="required">*</span>
+            </label>
+            <input
+              type="number"
+              class="form-input"
+              id="minCredits"
+              name="credit"
+              min="0"
+              max="50"
+              step="0.5"
+              value="{{id.mincredit}}"
+              required
+            />
+            <div class="input-help">
+              <i class="fas fa-info-circle"></i>
+              本学期需要完成的最低学分总数
+            </div>
+          </div>
+
+          <!-- 最多课程数 -->
+          <div class="form-field">
+            <label for="maxCourses">
+              最多课程数 <span class="required">*</span>
+            </label>
+            <input
+              type="number"
+              class="form-input"
+              id="maxCourses"
+              name="numb"
+              min="1"
+              step="1"
+              value="{{id.maxlesson}}"
+              required
+            />
+            <div class="input-help">
+              <i class="fas fa-info-circle"></i>
+              本组中最多会有多少课程被选进方案
+            </div>
+          </div>
+        </div>
+
+        <!-- 提交按钮 -->
+        <div class="submit-section">
+          <button type="submit" class="submit-btn">
+            <i class="fas fa-check-circle"></i> 保存限制条件
+          </button>
+        </div>
+      </form>
+
+      <!-- 课程列表区域 -->
+      <div class="courses-section">
+        <div class="section-title">
+          <h2>已加入的课程</h2>
+          <div class="courses-count">{{num}}门课程</div>
+        </div>
+
+        <div class="courses-list">
+          <!-- 课程项 -->
+          {% for i in id.rlt.all %}
+          <div class="course-item">
+            <div class="course-name">{{i.code}}{{i.cn}}</div>
+            <a href="/detail/{{i.code}}" class="course-link">查看详细信息 →</a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- 操作按钮区域 -->
+      <div class="actions-section">
+        <a href="{{ request.path }}/add"
+          ><button class="action-button add-course-btn">
+            <i class="fas fa-plus-circle"></i> 添加课程
+          </button></a
+        >
+        <a href="{{request.path}}/delete"
+          ><button class="action-button add-course-btn">
+            <i class="fas fa-minus-circle"></i> 删除课程组
+          </button></a
+        >
+        <a href="/"
+          ><button class="action-button add-course-btn">
+            <i class="fas fa-reply"></i> 返回
+          </button></a
+        >
+      </div>
+    </div>
+
+    <!--script>
+      // 表单提交处理
+      document
+        .getElementById("limitsForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const minCredits = parseInt(
+            document.getElementById("minCredits").value
+          );
+          const maxCourses = parseInt(
+            document.getElementById("maxCourses").value
+          );
+
+          // 简单验证
+          if (minCredits < 0 || minCredits > 50) {
+            alert("请输入0-50之间的学分值");
+            return;
+          }
+
+          if (maxCourses < 1 || maxCourses > 15) {
+            alert("请输入1-15之间的课程数");
+            return;
+          }
+
+          // 这里可以添加实际的表单提交逻辑
+          console.log("提交限制条件：");
+          console.log("最低学分：", minCredits);
+          console.log("最多课程数：", maxCourses);
+
+          // 模拟提交成功
+          const submitBtn = this.querySelector(".submit-btn");
+          const originalText = submitBtn.innerHTML;
+
+          submitBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> 保存中...';
+          submitBtn.disabled = true;
+
+          // 模拟网络请求延迟
+          setTimeout(() => {
+            alert(
+              `限制条件已保存！\n最低学分：${minCredits}\n最多课程数：${maxCourses}`
+            );
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+          }, 1000);
+        });
+
+      // 输入验证
+      document.querySelectorAll(".form-input").forEach((input) => {
+        input.addEventListener("change", function () {
+          const value = parseInt(this.value);
+          const min = parseInt(this.min);
+          const max = parseInt(this.max);
+
+          if (value < min) {
+            this.value = min;
+          } else if (value > max) {
+            this.value = max;
+          }
+        });
+      });
+    </script-->
+  </body>
+</html>

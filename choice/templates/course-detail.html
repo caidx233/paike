@@ -1,0 +1,143 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>课程详情</title>
+    <link rel="stylesheet" href="{% static 'css/choice.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!--link href="styles/style.css" rel="stylesheet" /-->
+    <!--link href="https://fonts.googleapis.com/css?family=Open+Sans"rel="stylesheet" /-->
+  </head>
+  <body>
+    <div class="course-detail-container">
+      <!-- 头部导航 -->
+      <div class="course-header">
+        <div class="course-title-section">
+          <div class="course-title">
+            <h1>{{crs.cn}}</h1>
+            <div>
+              <span class="course-code">{{crs.code}}</span>
+              <span class="course-credits">{{crs.credits}} 学分</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 课程基本信息 -->
+       <!-- 待添加功能
+      <div class="course-info-cards">
+        <div class="info-card">
+          <h3><i class="fas fa-info-circle"></i> 课程信息</h3>
+          <div class="info-item">
+            <span class="info-label">课程类型</span>
+            <span class="info-value">公共必修课</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">开课院系</span>
+            <span class="info-value">数学科学学院</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">考核方式</span>
+            <span class="info-value">考试</span>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h3><i class="fas fa-book"></i> 课程描述</h3>
+          <p style="color: #555; line-height: 1.6">
+            本课程主要讲授微积分的基本概念、理论和方法，包括函数、极限、导数、微分、积分等内容。是理工科各专业的重要基础课程。
+          </p>
+        </div>-->
+      </div>
+
+      <div class="classes-section">
+        <div class="section-title">
+          <h2><i class="fas fa-chalkboard-teacher"></i> 已选课堂</h2>
+          <div class="classes-count">{{num}} 个课堂</div>
+        </div>
+        <!-- 课堂选择表单 -->
+        <form class="classes-form" id="classesForm" action="/" method="post">
+          {% csrf_token %}
+          <div class="classes-list">
+          {% for i in lessons %}
+            <div class="class-card" id="cls{{i.code}}">
+              
+              <label class="class-select-label" for="{{i.code}}">
+                <div class="class-info-row">
+                <!-- 课堂号 -->
+                <div class="class-code-compact">{{i.code}}</div>
+                
+                
+                <!-- 教师信息 -->
+                 <div class="info-group-container">
+                <div class="teacher-info">
+                    <div class="info-label-small">教师</div>
+                    <div class="info-value-compact">
+                        <i class="fas fa-user"></i>
+                          <span class="info-value-text">
+                            {% for j in i.teacherAssignmentList %}
+                            {{j}}{{' '}}
+                            {% endfor %}
+                          </span>
+                    </div>
+                </div>
+                
+                
+                <!-- 时间信息 -->
+                <div class="teacher-info">
+                    <div class="info-label-small">时间</div>
+                    <div class="info-value-compact">
+                        <i class="far fa-clock"></i>
+                        <span class="info-value-text">
+                          {% for j in i.dateTimePlaceText %}
+                            {{j}}{{' '}}
+                            {% endfor %}
+                        </span>
+                    </div>
+                </div>
+                <div class="time-info">
+                    <div class="info-label-small">优先级</div>
+                    <div class="info-value-compact">
+                      <span class="info-value-text">{{i.rating}}</span>
+                        <!--input type="text" name="{{i.code}}" value="{{i.rating}}"-->
+                    </div>
+                </div>
+                </div>
+                <!-- 选中状态图标 -->
+                <!--div class="selected-indicator">
+                    <i class="fas fa-check-circle"></i>
+                </div-->
+            </div>
+                </div>
+                {% endfor %}
+              </label>
+            </div>
+
+          </div>
+
+
+          <!-- 表单操作 -->
+          <div class="form-actions">
+            <div class="action-buttons">
+                        <a href="/delete/{{crs.code}}"><button type="button" class="btn btn-secondary" id="selectall">
+                            <i class="fas fa-minus-circle"></i> 删除
+                        </button></a>
+                        <a href="/choice/{{crs.code}}"><button type="button" class="btn btn-secondary" id="clear">
+                            <i class="fas fa-plus-circle"></i> 添加
+                        </button></a>
+                        <a href="/"><button type="button" class="btn btn-secondary" id="clear">
+                            <i class="fas fa-reply"></i> 返回
+                        </button></a>
+                    </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+  </body>
+</html>
