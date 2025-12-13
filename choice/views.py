@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from choice.models import Course,Lesson,Courses
+from choice.models import Course,Lesson
 # Create your views here.
 def findCourse(request):
     cde=request.GET.get('code')
@@ -16,4 +16,12 @@ def findCourse(request):
 def choose(request,code):
     
     nw=Course.objects.get(code=code)
-    return render(request,'lesson-choose.html',context={'courses':nw,"num":len(nw.courses.all()),"lessons":nw.courses.all()})
+    lesson=nw.courses.all()
+    for i in lesson:
+        if request.session.get(i.code):
+            i.rating=request.session[i.code]
+            i.select=1
+        else:
+            i.rating=5
+            i.select=0
+    return render(request,'lesson-choose.html',context={'courses':nw,"num":len(lesson),"lessons":lesson})

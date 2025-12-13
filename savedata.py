@@ -1,0 +1,1 @@
+import os, sys, django; os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'paike.settings'); sys.path.append('.'); django.setup(); from django.core.management import call_command; call_command('dumpdata', '--exclude', 'contenttypes', '--exclude', 'auth.permission', '--indent', '2', stdout=open('data.json', 'w', encoding='utf-8'))

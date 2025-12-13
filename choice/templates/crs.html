@@ -89,7 +89,7 @@
 
         <div class="courses-list">
           <!-- 课程项 -->
-          {% for i in id.rlt.all %}
+          {% for i in lst %}
           <div class="course-item">
             <div class="course-name">{{i.code}}{{i.cn}}</div>
             <a href="/detail/{{i.code}}" class="course-link">查看详细信息 →</a>

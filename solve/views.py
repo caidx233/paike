@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from choice.models import Course,Lesson
-from courses.models import Courses
 from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
 import numpy as np
@@ -13,10 +12,12 @@ lsst=[7.5,8.4,9.45,10.35,11.25,14,14.5,15.55,16.45,17.35,19.3,20.2,21.10]
 lsed=[8.35,9.25,10.3,11.2,12.1,14.45,15.35,16.4,17.3,18.2,20.15,21.05,21.55]
 def inv(x):
     return f'{int(np.floor(x))}:{round((x-np.floor(x))*100):02d}'
-def solve(nw):
+def solve(nw,request):
     if nw>=len(crsall):
         return 1
-    for i in Course.objects.get(code=crsall[nw]).courses.filter(select=1):
+    for i in Course.objects.get(code=crsall[nw]).courses.all():
+        if request.session.get(i.code)==None:
+            continue
         f=1
         for j in i.nw:
             for k in j['wk']:
@@ -29,7 +30,7 @@ def solve(nw):
                     for l in j['time']:
                         lst.append((k,j['day'],l))
             fa.append(i)
-            if solve(nw+1)==1:
+            if solve(nw+1,request)==1:
                 return 1
             fa.remove(i)
             for j in i.nw:
@@ -60,7 +61,7 @@ def slv(request):
     lst.clear()
     fa.clear()
     crsall=request.session.get('choice')
-    solve(0)
+    solve(0,request)
     tmp=transfr()
     crs=[]
     for tot in '123':

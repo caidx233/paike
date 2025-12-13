@@ -55,7 +55,7 @@
         {% for i in choices %}
         <div class="course-card">
           <div class="course-name">
-            {% for j in i.rlt.all %}{{j.cn}}{{' '}}{% endfor %}
+            {% for j in i.rlt %}{{j.cn}}{{' '}}{% endfor %}
           </div>
           <a href="/courses/{{i.id}}" class="course-link"
             >查看课程组详细信息 →</a
