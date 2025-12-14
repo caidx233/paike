@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure--ahgjmykgo0r6*vthaut%0o)12#*xkj&t39ehq(p@@1cxi1bak
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['caidx.pythonanywhere.com']
 
 
 # Application definition
@@ -77,8 +77,14 @@ WSGI_APPLICATION = 'paike.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'caidx$default',
+        'USER': 'caidx',        
+        'PASSWORD': '090826Cdx',
+        'HOST': 'caidx.mysql.pythonanywhere-services.com', # 你的HOST地址
+        'PORT': '3306',
     }
 }
 

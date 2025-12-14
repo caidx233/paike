@@ -22,7 +22,6 @@ django.setup()
 from django.apps import apps
 import json
 from choice.models import Course,Lesson
-from courses.models import Courses
 from django.db import connection
 
 def truncate_table(Object):
@@ -46,4 +45,3 @@ def truncate_table(Object):
 
 truncate_table(Lesson)
 truncate_table(Course)
-truncate_table(Courses)
