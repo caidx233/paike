@@ -50,6 +50,7 @@ def index(request):
     psts=[]
     if request.session.get('crscnt')==None:
         request.session['crscnt']=0
+    request.session.pop('crs',None)
     for i in range(request.session['crscnt']):
         keys = list(filter(lambda item: item[1] == ('crs'+str(i+1)), request.session.items()))
         keys = [key for key, value in keys]
