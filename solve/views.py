@@ -63,8 +63,9 @@ tstret=[]
 def solve2(nw):
     global crsall,tstret
     if nw>=greq.session['crscnt']:
+        pre()
         solve(0,0)
-        return 
+        return
     pk='crs'+str(nw+1)
     keys = list(filter(lambda item: item[1] == pk, greq.session.items()))
     keys = [key for key, value in keys]
@@ -79,14 +80,14 @@ def solve2(nw):
                         crsall.append(keys[i])
                         ccnt+=Course.objects.get(code=keys[i]).credits
                 if ccnt>=crd:
-                    pre()
                     tstret.append(crsall.copy())
                     solve2(nw+1)
                 for i in range(len(keys)):
                     if (1<<i) & msk:
                         crsall.remove(keys[i])
-                
-            
+    else:
+        solve2(nw+1)
+
 def transfr():
     global fa,ret
     dic={'1':{},'2':{},'3':{},'4':{},'5':{},'6':{},'7':{},'8':{},'9':{},'10':{},'11':{},'12':{},'13':{}}
@@ -113,6 +114,8 @@ def slv(request):
     fa.clear()
     cfa.clear()
     crsall=request.session.get('choice')
+    #pre()
+    #solve(0,0)
 #sort lessons
     solve2(0)
     tmp=transfr()
@@ -136,4 +139,3 @@ def slv(request):
         nwdic['main']=main
         crs.append(nwdic)
     return render(request,'result.html',context={'fa':fa,'num':ret,'cls':crs,'tst':tstret})
-    
